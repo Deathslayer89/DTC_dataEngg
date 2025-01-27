@@ -1,0 +1,5 @@
+credentials      = "./keys/my-creds.json"
+project          = "my-project-id"
+region           = "us-central1"
+gcs_bucket_name  = "my-taxi-data-bucket"
+bq_dataset_name  = "trips_data_all"
