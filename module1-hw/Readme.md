@@ -1,6 +1,6 @@
 # NYC Taxi Data Analysis - Module 1 Homework
 
-Solutions for Module 1 homework of the Data Engineering Zoomcamp. Code and queries available in the repository: [ingest_data.py](./ingest_data.py), [docker-compose.yaml](./docker-compose.yaml)
+Solutions for Module 1 homework of the #DEZoomcamp Data Engineering Zoomcamp. Code and queries available in the repository: [ingest_data.py](./ingest_data.py), [docker-compose.yaml](./docker-compose.yaml)
 
 ## Question 1: Understanding Docker First Run
 
