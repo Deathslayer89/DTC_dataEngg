@@ -1,0 +1,83 @@
+id: taxi_homework_count
+namespace: zoomcamp
+inputs:
+  - id: taxi
+    type: SELECT
+    displayName: Select taxi type
+    values: [yellow, green]
+    defaults: yellow
+variables:
+  project_id: "xxxxxxxxxxxxx"  # Replace with your project ID
+  dataset: "ny_taxi"
+  table: "{{inputs.taxi}}_tripdata_2020"  # Separate table for 2020 data
+tasks:
+  - id: auth_gcp
+    type: io.kestra.plugin.gcp.auth.OauthAccessToken
+    serviceAccount: |
+      {
+      #key file content
+            }
+
+  
+  - id: load_2020_data
+    type: io.kestra.plugin.core.flow.EachSequential
+    value: '["01","02","03","04","05","06","07","08","09","10","11","12"]'
+    tasks:
+      - id: download_file
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - wget -O /tmp/taxi_data.csv.gz "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{inputs.taxi}}/{{inputs.taxi}}_tripdata_2020-{{taskrun.value}}.csv.gz"
+          - gunzip -f /tmp/taxi_data.csv.gz
+      
+      - id: load_to_bq
+        type: io.kestra.plugin.gcp.bigquery.Load
+        from: "/tmp/taxi_data.csv"
+        destinationTable: "{{vars.project_id}}.{{vars.dataset}}.{{vars.table}}"
+        format: CSV
+        createDisposition: CREATE_IF_NEEDED
+        writeDisposition: WRITE_APPEND
+        csvOptions:
+          allowJaggedRows: true
+          encoding: UTF-8
+          fieldDelimiter: ","
+          quote: "\""
+          skipLeadingRows: 1
+
+  # Only for yellow taxi (Question 5)
+  - id: load_march_2021
+    type: io.kestra.core.tasks.scripts.Bash
+    commands:
+    - |
+      if [ "{{inputs.taxi}}" = "yellow" ]; then
+        wget -O /tmp/march_2021.csv.gz "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-03.csv.gz"
+        gunzip -f /tmp/march_2021.csv.gz
+      fi
+    
+  - id: load_march_2021_to_bq
+    type: io.kestra.plugin.gcp.bigquery.Load
+    from: "/tmp/march_2021.csv"
+    destinationTable: "{{vars.project_id}}.{{vars.dataset}}.yellow_tripdata_2021"
+    format: CSV
+    createDisposition: CREATE_IF_NEEDED
+    writeDisposition: WRITE_APPEND
+    csvOptions:
+      allowJaggedRows: true
+      encoding: UTF-8
+      fieldDelimiter: ","
+      quote: "\""
+      skipLeadingRows: 1
+    runIf: "{{inputs.taxi == 'yellow'}}"
+
+  - id: count_2020_data
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      SELECT COUNT(*) as count_2020
+      FROM `{{vars.project_id}}.{{vars.dataset}}.{{vars.table}}`
+
+  - id: count_march_2021
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      SELECT COUNT(*) as count_march_2021
+      FROM `{{vars.project_id}}.{{vars.dataset}}.yellow_tripdata_2021`
+      WHERE EXTRACT(MONTH FROM pickup_datetime) = 3
+    runIf: "{{inputs.taxi == 'yellow'}}"
