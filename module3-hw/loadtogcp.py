@@ -1,69 +1,3 @@
-# import subprocess
-# import os
-# from google.cloud import storage
-# import time
-
-# # Configuration
-# BUCKET_NAME = "ny-taxidata-bucket"  # Change this to your bucket name
-# CREDENTIALS_FILE = "C:\\Users\\dines\\Downloads\\zoomcamp-450020-df164a1333c8.json"  # Your service account key file
-# BASE_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-"
-# MONTHS = [f"{i:02d}" for i in range(1, 7)]
-
-
-# # Initialize GCS client
-# client = storage.Client.from_service_account_json(CREDENTIALS_FILE)
-# bucket = client.bucket(BUCKET_NAME)
-
-# def download_and_upload(month):
-#     url = f"{BASE_URL}{month}.parquet"
-#     filename = f"yellow_tripdata_2024-{month}.parquet"
-    
-#     try:
-#         # Use wget to download (more reliable for large files)
-#         print(f"Downloading {filename}...")
-#         subprocess.run(['wget', '--no-verbose', url, '-O', filename], check=True)
-        
-#         # Upload to GCS
-#         print(f"Uploading {filename} to GCS...")
-#         blob = bucket.blob(filename)
-#         blob.upload_from_filename(filename)
-        
-#         # Verify upload
-#         if blob.exists():
-#             print(f"Successfully uploaded {filename}")
-            
-#         # Clean up local file
-#         os.remove(filename)
-#         print(f"Cleaned up local file {filename}")
-        
-#         return True
-        
-#     except Exception as e:
-#         print(f"Error processing {filename}: {e}")
-#         # Clean up in case of failure
-#         if os.path.exists(filename):
-#             os.remove(filename)
-#         return False
-
-# def main():
-#     print(f"Starting uploads to bucket: {BUCKET_NAME}")
-    
-#     results = []
-#     for month in MONTHS:
-#         success = download_and_upload(month)
-#         results.append(success)
-#         # Add small delay between files
-#         time.sleep(2)
-    
-#     # Summary
-#     successful = sum(1 for r in results if r)
-#     print(f"\nUpload Summary:")
-#     print(f"Successfully uploaded: {successful}/{len(MONTHS)} files")
-#     print(f"Failed uploads: {len(MONTHS) - successful}")
-
-# if __name__ == "__main__":
-#     main()
-
 import os
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -72,10 +6,10 @@ import time
 
 
 #Change this to your bucket name
-BUCKET_NAME = "ny-taxidata-bucket"
+BUCKET_NAME = "bucketname"
 
 #If you authenticated through the GCP SDK you can comment out these two lines
-CREDENTIALS_FILE = "C:\\Users\\dines\\Downloads\\zoomcamp-450020-df164a1333c8.json" 
+CREDENTIALS_FILE = "pathtokeys.json" 
 client = storage.Client.from_service_account_json(CREDENTIALS_FILE)
 
 
