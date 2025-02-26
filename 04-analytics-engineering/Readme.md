@@ -26,6 +26,7 @@ After setting up the data sources, I built my dbt models following the recommend
 - Built dimension and fact models by joining with `dim_zones`
 - Added additional dimensions like year, quarter, and month to facilitate filtering
 
+You can checkout by homework project dbt source code at [dbtproject](./dbtproject)
 ## Homework Solutions
 
 ### Question 1: Understanding dbt model resolution
