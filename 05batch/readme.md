@@ -1,4 +1,4 @@
-# Yellow Taxi Data Analysis with PySpark
+# Yellow Taxi Data Analysis with PySpark - Module 5 Homework
 
 [View My Analysis Notebook](05_batch_hw.ipynb)
 
@@ -14,15 +14,15 @@ pip install pyspark==3.4.1 jupyter pandas
 
 ## Data
 
-I used the following datasets stored in `/home/dineshswain2001/data/`:
+I used the following datasets:
 - `yellow_tripdata_2024-10.parquet`: Main taxi trip dataset
 - `taxi_zone_lookup.csv`: Location ID mapping table
 
 ## Question Solutions
 
-### Question 1: Schema Exploration
+### Question 1: Install Spark and PySpark
 
-I first set up a Spark session and loaded the yellow taxi dataset:
+I installed Spark and PySpark following the guide, created a local spark session, and checked the version:
 
 ```python
 spark = SparkSession.builder \
@@ -30,17 +30,17 @@ spark = SparkSession.builder \
     .master("local[*]") \
     .getOrCreate()
 
-df = spark.read.parquet("/home/dineshswain2001/data/yellow_tripdata_2024-10.parquet")
-df.printSchema()
+print("Spark version:", spark.version)
 ```
 
-This showed me all the columns in the dataset including timestamps, passenger details, and payment information.
+This showed that I'm using Spark version 3.4.1.
 
-### Question 2: Data Repartitioning
+### Question 2: Yellow October 2024 Repartitioning
 
-I repartitioned the dataset into 4 files and saved them to a new location:
+I read the October 2024 Yellow Taxi data and repartitioned it into 4 partitions:
 
 ```python
+df = spark.read.parquet("/home/dineshswain2001/data/yellow_tripdata_2024-10.parquet")
 df_repartitioned = df.repartition(4)
 output_path = "/home/dineshswain2001/data/yellow_tripdata_repartitioned"
 df_repartitioned.write.mode('overwrite').parquet(output_path)
@@ -54,9 +54,9 @@ total_size_bytes = sum(os.path.getsize(os.path.join(output_path, f)) for f in pa
 avg_size_mb = (total_size_bytes / len(parquet_files)) / (1024 * 1024)
 ```
 
-This showed that the 4 parquet files had an average size of 23.04 MB.
+This showed that the 4 parquet files had an average size of 23.04 MB, which is closest to 25MB.
 
-### Question 3: Trip Count for October 15th
+### Question 3: Count records for October 15th
 
 I used date functions to filter trips that occurred on October 15th, 2024:
 
@@ -72,7 +72,7 @@ oct_15_trips = df.filter(
 trip_count = oct_15_trips.count()
 ```
 
-This revealed 128,893 trips occurred on that specific day.
+This revealed 128,893 trips occurred on that specific day, which is closest to 125,567.
 
 ### Question 4: Longest Trip Duration
 
@@ -94,9 +94,13 @@ df_with_duration = df_with_duration.withColumn(
 max_duration = df_with_duration.select(max("trip_duration_hours")).collect()[0][0]
 ```
 
-I found that the longest trip was 162.62 hours (about 6.8 days).
+I found that the longest trip was 162.62 hours, which is closest to 162 hours.
 
-### Question 6: Least Frequent Pickup Zone
+### Question 5: User Interface Port
+
+Spark's User Interface dashboard runs on local port 4040 by default.
+
+### Question 6: Least Frequent Pickup Location Zone
 
 I loaded the zone lookup table and joined it with the trip data to find zones with the fewest pickups:
 
