@@ -96,7 +96,7 @@ max_duration = df_with_duration.select(max("trip_duration_hours")).collect()[0][
 
 I found that the longest trip was 162.62 hours (about 6.8 days).
 
-### Question 5: Least Frequent Pickup Zone
+### Question 6: Least Frequent Pickup Zone
 
 I loaded the zone lookup table and joined it with the trip data to find zones with the fewest pickups:
 
