@@ -6,7 +6,6 @@ In this homework, I learned how to work with streaming data using PyFlink and Re
 First, I had to get all the required containers running:
 
 ```bash
-cd ../../../06-streaming/pyflink/
 docker-compose up -d
 ```
 
