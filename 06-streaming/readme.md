@@ -42,7 +42,7 @@ I needed to find out what version of Redpanda was running. I used:
 docker exec -it redpanda-1 rpk version
 ```
 
-** Answer:** 
+**Answer:** 
 Version: v24.2.18,
 Git ref: f9a22d4430,
 Build date: 2025-02-14T12:52:55Z,
