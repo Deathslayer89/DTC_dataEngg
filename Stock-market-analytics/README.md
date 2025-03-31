@@ -278,11 +278,11 @@ To update Spark batch jobs:
 
 #### 5.1 Monitoring Pipelines
 
-1. **![Airflow Dashboard](dashboards/airflow.png)**: Access at `http://<KAFKA_VM_IP>:8080` with username `admin`. The Airflow UI allows you to monitor and trigger DAGs that orchestrate DBT transformations and batch processing jobs.
+1. **![Airflow Dashboard](images/airflow.png)**: Access at `http://<KAFKA_VM_IP>:8080` with username `admin`. The Airflow UI allows you to monitor and trigger DAGs that orchestrate DBT transformations and batch processing jobs.
 
-2. **![BigQuery Console](dashboards/bigquery.png)**: View and query your datasets, monitor job execution, and validate data quality. The BigQuery interface provides SQL editors, job history, and data preview capabilities.
+2. **![BigQuery Console](images/bigquery.png)**: View and query your datasets, monitor job execution, and validate data quality. The BigQuery interface provides SQL editors, job history, and data preview capabilities.
 
-3. **![VM Dashboard](dashboards/vm.png)**: Monitor Kafka VM performance, resource utilization, and manage SSH connections to the streaming infrastructure.
+3. **![VM Dashboard](images/vm.png)**: Monitor Kafka VM performance, resource utilization, and manage SSH connections to the streaming infrastructure.
 
 4. **Cloud Logging**: View logs in GCP Console under Logging
 
