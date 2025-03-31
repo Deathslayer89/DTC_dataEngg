@@ -1,0 +1,24 @@
+# Airflow and its dependencies
+apache-airflow==2.5.3
+apache-airflow-providers-google==10.0.0
+
+# DBT
+dbt-bigquery==1.5.0
+
+# Google Cloud
+google-cloud-bigquery==3.11.4
+google-cloud-storage==2.8.0
+
+# Kafka
+confluent-kafka==2.3.0
+
+# Data processing
+pandas==2.0.3
+numpy==1.24.3
+
+# Database
+psycopg2-binary==2.9.9
+
+# Utilities
+python-dotenv==1.0.0
+loguru==0.7.2 

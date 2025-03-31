@@ -1,0 +1,12 @@
+stock_market_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: stockmarket-455214
+      dataset: dbt_analytics
+      threads: 4
+      timeout_seconds: 300
+      location: us-central1
+      priority: interactive
