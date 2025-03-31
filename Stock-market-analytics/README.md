@@ -170,6 +170,27 @@ chmod +x deploy.sh
 ./deploy.sh --enable-terraform true --enable-batch true --enable-streaming true --enable-analytics true
 ```
 
+### Important Infrastructure Note
+
+⚠️ If you're planning to deploy individual components separately (instead of using the unified deploy.sh script), be aware that you **must run Terraform first** to set up the required infrastructure.
+
+```bash
+# First, deploy infrastructure using Terraform
+cd terraform
+terraform init
+terraform apply -var-file=terraform.tfvars
+cd ..
+
+# Then deploy individual components
+./spark_pipeline/deploy_spark.sh
+# or
+./stream_pipeline/deploy_streaming_kafka.sh
+# or
+./analytics/deploy_analytics.sh
+```
+
+The unified deploy.sh script handles this sequence automatically when the `--enable-terraform true` flag is set, but if you're running individual deployment scripts directly, you need to ensure the cloud infrastructure exists first. Attempting to deploy Spark, Kafka, or Airflow components without the underlying infrastructure will result in deployment failures.
+
 #### 3.1 Batch Processing (Spark Pipeline)
 
 The batch pipeline uses Dataproc for Spark-based processing:
